@@ -15,7 +15,7 @@ namespace Core
             var key = Environment.GetEnvironmentVariable("SUPABASE_KEY");
 
             var options = new Supabase.SupabaseOptions { AutoConnectRealtime = true };
-            var _client = new Supabase.Client(url, key, options);
+            _client = new Supabase.Client(url, key, options);
 
             await _client.InitializeAsync();
         }

@@ -54,3 +54,9 @@ TestResult.xml
 nunit-*.xml
 
 */.vs/*
+
+# Env files
+.env
+
+# Reqnroll
+*.feature.cs

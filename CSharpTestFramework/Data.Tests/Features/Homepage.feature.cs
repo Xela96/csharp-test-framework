@@ -28,8 +28,8 @@ namespace Data.Tests.Features
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Homepage Content", "As a site visitor\r\nI want to see up to date content on the homepage\r\nSo that I ca" +
-                "n understand who the creator of the site is and what they offer", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Homepage Content", "As a database consumer\r\nI want to see valid data in the database\r\nSo that I can e" +
+                "nsure usage of this database will not cause issues", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "Homepage.feature"
 #line hidden
@@ -114,10 +114,10 @@ this.ScenarioInitialize(scenarioInfo);
 await this.FeatureBackgroundAsync();
 #line hidden
 #line 12
- await testRunner.WhenAsync("the homepage is opened", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
+ await testRunner.WhenAsync("the about_me content is retrieved", ((string)(null)), ((global::Reqnroll.Table)(null)), "When ");
 #line hidden
 #line 13
- await testRunner.ThenAsync("the about me content should be visible and matching the database", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
+ await testRunner.ThenAsync("the text should match the expected value", ((string)(null)), ((global::Reqnroll.Table)(null)), "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -11,6 +11,8 @@ Test framework in CSharp, demonstrating the structure for component testing, int
     * Core functionality for the tests that can be used by any of the testing projects.
  * [Data.Tests](./CSharpTestFramework/Data.Tests)
     * Data tests are run by connecting to Supabase through the Supabase Nuget package.
+ * [Performance.Tests](./CSharpTestFramework/Performance.Tests)
+    * Performance tests run Grafana K6 process and parse console output stream toget results to fit in with C# BDD structure. 
  * [UI.Tests](./CSharpTestFramework/UI.Tests)
     * UI tests are run using Playwright for GUI automation, and POM for components on each page of the web app.
 

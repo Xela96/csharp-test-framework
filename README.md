@@ -5,13 +5,14 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 - Reqnroll is used across the solution for BDD test scenarios.
 
 ## Project Breakdown
+ * [API.Tests](./CSharpTestFramework/API.Tests)
+    * API tests using RestSharp to make calls and process responses.
  * [Core](./CSharpTestFramework/Core)
     * Core functionality for the tests that can be used by any of the testing projects.
- * [UI.Tests](./CSharpTestFramework/UI.Tests)
-    * UI tests are run using Playwright for GUI automation, and POM for components on each page of the web app.
  * [Data.Tests](./CSharpTestFramework/Data.Tests)
     * Data tests are run by connecting to Supabase through the Supabase Nuget package.
-
+ * [UI.Tests](./CSharpTestFramework/UI.Tests)
+    * UI tests are run using Playwright for GUI automation, and POM for components on each page of the web app.
 
 ## Dependencies
 ### Nuget Packages
@@ -20,3 +21,4 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 - NUnit Version = 4.4.0
 - Reqnroll.NUnit Version = 3.2.0
 - Supabase Version = 1.1.1
+- RestSharp Version = 112.1.0

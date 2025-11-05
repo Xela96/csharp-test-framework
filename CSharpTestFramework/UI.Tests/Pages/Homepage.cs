@@ -1,9 +1,10 @@
 ﻿using Microsoft.Playwright;
-using UI.Tests.StepDefinitions;
+using UI.Tests.Hooks;
+
 
 namespace UI.Tests.Pages
 {
-    public class Homepage(Hooks hooks)
+    public class Homepage(UIHooks hooks)
     {
         private readonly IPage _page = hooks.Page;
 

@@ -1,6 +1,5 @@
-Feature: Homepage
+Feature: HomepagePerformance
 
-k6 run --out json=output.json homepage_load_test.js
 As a sdet
 I want to verify the homepage responds quickly under load
 So that I can ensure the site remains performant for users

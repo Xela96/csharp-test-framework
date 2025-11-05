@@ -7,13 +7,14 @@ using RestSharp;
 namespace API.Tests.StepDefinitions
 {
     [Binding]
-    public class HomepageStepDefinitions(ScenarioContext scenarioContext)
+    public class HomepageAPIStepDefinitions(ScenarioContext scenarioContext)
     {
         private readonly ScenarioContext _scenarioContext = scenarioContext;
 
         [Given("the homepage address {string}")]
         public void GivenTheHomepageAddress(string homepage)
         {
+            Log.Information($"Setting homepage address to {homepage}");
             _scenarioContext.Add("homepage", homepage);
         }
 
@@ -23,7 +24,11 @@ namespace API.Tests.StepDefinitions
             var homepage = _scenarioContext.Get<string>("homepage");
             var client = new RestClient(homepage);
             var service = new RestSharpService(client);
+
+            Log.Debug($"Sending GET request to {homepage}");
             var response = await service.GetContent();
+
+            Log.Information($"Received response with status {response.StatusCode}");
             _scenarioContext.Add("response", response);
         }
 
@@ -32,6 +37,8 @@ namespace API.Tests.StepDefinitions
         {
             var response = _scenarioContext.Get<RestResponse>("response");
             ClassicAssert.AreEqual(System.Net.HttpStatusCode.OK, response.StatusCode);
+
+            Log.Information("Assertion passed - status code is OK");
         }
     }
 }

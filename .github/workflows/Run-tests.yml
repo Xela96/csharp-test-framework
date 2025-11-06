@@ -1,0 +1,67 @@
+name: Build and Run Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      Category:
+        description: 'Choose a test tag'
+        required: false
+        default: 'All'
+        type: choice
+        options:
+          - All
+          - mytag
+          - Smoke
+      Project:
+        description: 'Choose a project to run tests from'
+        required: false
+        default: 'All'
+        type: choice
+        options:
+          - All
+          - API.Tests
+          - Data.Tests
+          - Performance.Tests
+          - UI.Tests
+
+# TBD - Input choice between Production and Local environments
+# TBD - Repository dispatch
+
+jobs:
+  Run-Tests:
+    env:
+      tag: ${{ inputs.Category }}
+      project: ${{ inputs.Project }}
+      
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set test tag filtering based on input
+      run: |
+          if ["${ tag }" = "All"]; then
+            echo "tag=" >> $GITHUB_ENV
+          else
+            echo "tag=${ tag }" >> $GITHUB_ENV
+          fi
+    - name: Set test project filtering based on input
+      run: |
+          if ["${ project }" = "All"]; then
+            echo "project=" >> $GITHUB_ENV
+          else
+            echo "project=${ project }" >> $GITHUB_ENV
+          fi
+    - uses: actions/checkout@v4
+    - name: Setup .NET projects
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}

@@ -24,3 +24,19 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 - Reqnroll.NUnit Version = 3.2.0
 - Supabase Version = 1.1.1
 - RestSharp Version = 112.1.0
+- Serilog Version = 4.3.0
+- Serilog.Sinks.File Version = 7.0.0
+- Serilog.Sinks.Console Version = 1.1.1
+
+## Setup
+- From .\CSharpTestFramework:  
+```dotnet build```
+## Run Tests
+- From .\CSharpTestFramework:  
+```dotnet test [<project-name>] [--filter "TestCategory=<TestTag>"]```
+
+Optional parameters: 
+   * Project Name
+   * Test filter
+
+## Test Output

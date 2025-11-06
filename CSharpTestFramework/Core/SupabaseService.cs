@@ -1,9 +1,5 @@
 ﻿using Core.DbModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace Core
 {
@@ -18,8 +14,17 @@ namespace Core
 
         public async Task<List<HomepageContent>> GetHomepageContentAsync()
         {
-            var result = await _dbClient.Client.From<HomepageContent>().Get();
-            return result.Models;
+            try
+            {
+                var result = await _dbClient.Client.From<HomepageContent>().Get();
+                return result.Models;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to retrieve homepage content from database.", ex);
+                throw new InvalidOperationException("Database retrieval failed, see logs for more details.", ex);
+            }
+            
         }
     }
 }

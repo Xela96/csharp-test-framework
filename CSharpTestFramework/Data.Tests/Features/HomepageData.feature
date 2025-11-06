@@ -1,4 +1,4 @@
-Feature: Homepage Content
+Feature: HomepageData
 
 As a database consumer
 I want to see valid data in the database

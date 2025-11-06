@@ -1,21 +1,17 @@
-using Microsoft.Playwright;
-using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using UI.Tests.Pages;
 
 namespace UI.Tests.StepDefinitions
 {
     [Binding]
-    public sealed class HomepageStepDefinitions(Hooks hooks, Homepage homepage)
+    public sealed class HomepageUIStepDefinitions(Homepage homepage)
     {
-        private readonly ScenarioContext _context;
-        private readonly IPage _page = hooks.Page;
         private readonly Homepage _homepage = homepage;
-
 
         [Given("a user accessing {string}")]
         public async Task GivenAUserAccessing(string address)
         {
+            Log.Information("Accessing homepage of web application");
             await _homepage.GoToAsync();
         }
 
@@ -23,6 +19,7 @@ namespace UI.Tests.StepDefinitions
         public async Task WhenThePageLoads()
         {
             await _homepage.WaitForPageAsync();
+            Log.Information("Homepage has loaded");
         }
 
         [Then("the page title is correct")]
@@ -30,6 +27,7 @@ namespace UI.Tests.StepDefinitions
         {
             string title = await _homepage.GetTitleAsync();
             ClassicAssert.AreEqual("Alex Doherty", title);
+            Log.Information("Assertion passed - Homepage has loaded with correct content verified");
         }
     }
 }

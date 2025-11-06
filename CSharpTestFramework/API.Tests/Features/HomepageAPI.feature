@@ -1,5 +1,4 @@
-Feature: Homepage
-
+Feature: HomepageAPI
 
 @mytag
 Scenario: Verify homepage status code is 200

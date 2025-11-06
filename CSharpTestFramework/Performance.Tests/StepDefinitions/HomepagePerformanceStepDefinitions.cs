@@ -8,7 +8,7 @@ using NUnit.Framework.Legacy;
 namespace Performance.Tests.StepDefinitions
 {
     [Binding]
-    public class HomepageStepDefinitions (ScenarioContext _scenarioContext)
+    public class HomepagePerformanceStepDefinitions (ScenarioContext _scenarioContext)
     {
         [Given("the performance test script (.*)")]
         public void GivenThePerformanceTestScript(string scriptName)
@@ -18,6 +18,8 @@ namespace Performance.Tests.StepDefinitions
                 Path.Combine(executingDirectory, "..", "..", "..", "Scripts", scriptName)
             );
 
+            Log.Information($"Executing K6 script {scriptName} with full path {scriptPath}");
+
             _scenarioContext.Add("scriptPath", scriptPath);
         }
 
@@ -25,6 +27,8 @@ namespace Performance.Tests.StepDefinitions
         public void WhenTheLoadTestIsExecuted()
         {
             var scriptPath = _scenarioContext.Get<string>("scriptPath");
+
+            Log.Information($"Executing script for load test");
 
             var p = new Process
             {
@@ -52,6 +56,8 @@ namespace Performance.Tests.StepDefinitions
                 Console.WriteLine("K6 Errors:");
                 Console.WriteLine(error);
                 _scenarioContext.Add("error", error);
+
+                Log.Error($"Error with execution of K6 script: {error}");
             }
 
             p.WaitForExit();
@@ -67,6 +73,7 @@ namespace Performance.Tests.StepDefinitions
             var match = Regex.IsMatch(output, "status is 200");
 
             ClassicAssert.True(match);
+            Log.Information("Assertion passed - Status code 200 has been returned");
         }
     }
 }

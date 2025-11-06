@@ -1,4 +1,4 @@
-Feature: Homepage
+Feature: HomepageUI
 
 @mytag
 Scenario: Visit the homepage

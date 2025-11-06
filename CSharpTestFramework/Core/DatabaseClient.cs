@@ -1,6 +1,4 @@
-﻿using Supabase;
-using Supabase.Interfaces;
-using Supabase.Postgrest;
+﻿using Serilog;
 
 namespace Core
 {
@@ -10,23 +8,48 @@ namespace Core
 
         public async Task InitializeAsync()
         {
-            DotNetEnv.Env.Load();
+            try
+            {
+                DotNetEnv.Env.Load();
+            }
+            catch (FileNotFoundException)
+            {
+                Log.Warning(".env file not found in current directory");
+            }
+
             var url = Environment.GetEnvironmentVariable("SUPABASE_URL");
             var key = Environment.GetEnvironmentVariable("SUPABASE_KEY");
 
-            var options = new Supabase.SupabaseOptions { AutoConnectRealtime = true };
-            _client = new Supabase.Client(url, key, options);
+            try
+            {
+                var options = new Supabase.SupabaseOptions { AutoConnectRealtime = true };
+                _client = new Supabase.Client(url, key, options);
 
-            await _client.InitializeAsync();
+                await _client.InitializeAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to initialise connection with Supabase database.", ex);
+                throw new InvalidOperationException("Database connection failed, see logs for more details.", ex);
+            }
+            
         }
 
         public Supabase.Client Client => _client ?? throw new InvalidOperationException("Database client not initialized.");
 
-        // A result can be fetched like so.
         public async Task<List<T>> GetAllAsync<T>() where T : Supabase.Postgrest.Models.BaseModel, new()
         {
-            var result = await _client.From<T>().Get();
-            return result.Models;
+            try
+            {
+                var result = await _client.From<T>().Get();
+                return result.Models;
+            }
+            catch(Exception ex) 
+            {
+                Log.Error("Failed to retrieve content from database table.", ex);
+                throw new InvalidOperationException("Database retrieval failed, see logs for more details.", ex);
+            }
+            
         }
 
     }

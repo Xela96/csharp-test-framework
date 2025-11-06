@@ -1,4 +1,5 @@
 ﻿using RestSharp;
+using Serilog;
 
 namespace Core
 {
@@ -13,8 +14,17 @@ namespace Core
 
         public async Task<RestResponse> GetContent(string path="")
         {
-            var response = await _siteClient.ExecuteAsync(new RestRequest($"/{path}", Method.Get));
-            return response;
+            try
+            {
+                var response = await _siteClient.ExecuteAsync(new RestRequest($"/{path}", Method.Get));
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Failed to send REST request.", ex);
+                throw new InvalidOperationException("Rest request failed, see logs for more details.", ex);
+            }
+            
         }
     }
 }

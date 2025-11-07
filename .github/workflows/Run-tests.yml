@@ -42,14 +42,14 @@ jobs:
     steps:
     - name: Set test tag filtering based on input
       run: |
-          if ["${ tag }" = "All"]; then
+          if [ "${tag}" = "All" ]; then
             echo "tag=" >> $GITHUB_ENV
           else
             echo "tag=${ tag }" >> $GITHUB_ENV
           fi
     - name: Set test project filtering based on input
       run: |
-          if ["${ project }" = "All"]; then
+          if [ "${project}" = "All" ]; then
             echo "project=" >> $GITHUB_ENV
           else
             echo "project=${ project }" >> $GITHUB_ENV
@@ -60,8 +60,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
+      working-directory: ./CSharpTestFramework
       run: dotnet restore
     - name: Build
+      working-directory: ./CSharpTestFramework
       run: dotnet build --no-restore
     - name: Test
+      working-directory: ./CSharpTestFramework
       run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}

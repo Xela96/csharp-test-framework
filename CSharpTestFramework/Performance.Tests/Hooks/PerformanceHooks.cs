@@ -4,6 +4,7 @@ using Serilog.Context;
 
 namespace Performance.Tests.Hooks
 {
+    [Binding]
     public class PerformanceHooks
     {
         private IDisposable? _context;

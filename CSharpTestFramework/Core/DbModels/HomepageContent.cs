@@ -11,10 +11,10 @@ namespace Core.DbModels
         public int Id { get; set; }
 
         [Column("section_name")]
-        public string SectionName { get; set; }
+        public string? SectionName { get; set; }
 
         [Column("text_content")]
-        public string TextContent { get; set; }
+        public string? TextContent { get; set; }
 
         [Column("last_updated")]
         public DateTime LastUpdated { get; set; }

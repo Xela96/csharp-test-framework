@@ -40,3 +40,9 @@ Optional parameters:
    * Test filter
 
 ## Test Output
+Log files for each test project is generated as an artifact following testing.
+These can be found at:  
+```test-logs/<project>/bin/Debug/net8.0/logs/<projectName>_<currentDateTime>.txt```
+
+Similarly, screenshots are taken for the UI tests and can be found in the generated artifact at:   
+```test-logs/<project>/bin/Debug/net8.0/screenshots/<test-name>.png```

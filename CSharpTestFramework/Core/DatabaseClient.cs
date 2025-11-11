@@ -1,10 +1,11 @@
-﻿using Serilog;
+﻿#nullable disable warnings
+using Serilog;
 
 namespace Core
 {
     public class DatabaseClient
     {
-        private Supabase.Client _client;
+        private Supabase.Client? _client;
 
         public async Task InitializeAsync()
         {
@@ -57,3 +58,5 @@ namespace Core
 
 
 }
+
+#nullable enable warnings

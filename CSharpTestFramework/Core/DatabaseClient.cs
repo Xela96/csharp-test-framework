@@ -3,8 +3,9 @@ using Serilog;
 
 namespace Core
 {
-    public class DatabaseClient(Supabase.Client _client)
-    {        
+    public class DatabaseClient
+    {
+        private Supabase.Client? _client;
 
         public async Task InitializeAsync()
         {

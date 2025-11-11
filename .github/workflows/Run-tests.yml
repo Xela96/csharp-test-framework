@@ -65,7 +65,7 @@ jobs:
         echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
         sudo apt-get update
         sudo apt-get install k6
-        
+
     - uses: actions/checkout@v4
     - name: Setup .NET projects
       uses: actions/setup-dotnet@v4
@@ -80,8 +80,9 @@ jobs:
       run: dotnet build --no-restore
 
     - name: Install Playwright browsers
+      working-directory: ./CSharpTestFramework/UI.Tests
       run: |
-        pwsh bin/Debug/netX/playwright.ps1 install
+        pwsh bin/Debug/net8.0/playwright.ps1 install
 
     - name: Test
       working-directory: ./CSharpTestFramework

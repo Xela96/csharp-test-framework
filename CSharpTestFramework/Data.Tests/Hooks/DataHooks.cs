@@ -4,6 +4,7 @@ using Serilog.Context;
 
 namespace Data.Tests.Hooks
 {
+    [Binding]
     public class DataHooks
     {
         private IDisposable? _context;

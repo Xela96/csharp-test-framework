@@ -47,7 +47,7 @@ jobs:
           if [ "${tag}" = "All" ]; then
             echo "tag=" >> $GITHUB_ENV
           else
-            echo "tag=${tag}" >> $GITHUB_ENV
+            echo "tag=--filter \"TestCategory=${tag}\"" >> $GITHUB_ENV
           fi
     - name: Set test project filtering based on input
       run: |
@@ -87,3 +87,12 @@ jobs:
     - name: Test
       working-directory: ./CSharpTestFramework
       run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}
+
+    - name: Upload test logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs
+        path: |
+          CSharpTestFramework/**/bin/Debug/net8.0/logs/*.txt
+          CSharpTestFramework/UI.Tests/bin/Debug/net8.0/screenshots/*.png

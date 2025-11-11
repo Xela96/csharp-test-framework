@@ -3,6 +3,7 @@ using Serilog.Context;
 
 namespace API.Tests.Hooks
 {
+    [Binding]
     public class APIHooks
     {
         private IDisposable? _context;

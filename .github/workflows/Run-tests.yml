@@ -1,0 +1,126 @@
+name: Build and Run Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      Category:
+        description: 'Choose a test tag'
+        required: false
+        default: 'All'
+        type: choice
+        options:
+          - All
+          - mytag
+          - Smoke
+      Project:
+        description: 'Choose a project to run tests from'
+        required: false
+        default: 'All'
+        type: choice
+        options:
+          - All
+          - API.Tests
+          - Data.Tests
+          - Performance.Tests
+          - UI.Tests
+
+# TBD - Input choice between Production and Local environments
+# TBD - Repository dispatch
+
+jobs:
+  Run-Tests:
+    env:
+      tag: ${{ github.event_name == 'workflow_dispatch' && inputs.Category || 'All' }}
+      project: ${{ github.event_name == 'workflow_dispatch' && inputs.Project || 'All' }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+      
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set test tag filtering based on input
+      run: |
+          if [ "${tag}" = "All" ] || [ "${tag}" = ""]; then
+            echo "tag=" >> $GITHUB_ENV
+          else
+            echo "tag=--filter \"TestCategory=${tag}\"" >> $GITHUB_ENV
+          fi
+    - name: Set test project filtering based on input
+      run: |
+          if [ "${project}" = "All" ] || [ "${project}" = ""]; then
+            echo "project=" >> $GITHUB_ENV
+          else
+            echo "project=${project}" >> $GITHUB_ENV
+          fi
+
+    - name: Install k6
+      run: |
+        sudo apt-get update
+        sudo gpg -k
+        sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+        sudo apt-get update
+        sudo apt-get install k6
+
+    - uses: actions/checkout@v4
+    - name: Setup .NET projects
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Restore dependencies
+      working-directory: ./CSharpTestFramework
+      run: dotnet restore
+    - name: Clean
+      working-directory: ./CSharpTestFramework
+      run: dotnet clean
+    - name: Build
+      working-directory: ./CSharpTestFramework
+      run: dotnet build --no-restore
+
+    - name: Install Playwright browsers
+      working-directory: ./CSharpTestFramework/UI.Tests
+      run: |
+        pwsh bin/Debug/net8.0/playwright.ps1 install
+
+    - name: Test
+      working-directory: ./CSharpTestFramework
+      run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}
+
+    - name: Load test report history
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages
+
+    - name: Build test report
+      uses: simple-elf/allure-report-action@v1.13
+      if: always()
+      with:
+        gh_pages: gh-pages
+        allure_results: allure-results
+        allure_history: allure-history
+
+    - name: Publish test report
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: allure-history
+
+    - name: Upload test logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs
+        path: |
+          CSharpTestFramework/**/bin/Debug/net8.0/logs/*.txt
+          CSharpTestFramework/UI.Tests/bin/Debug/net8.0/screenshots/*.png

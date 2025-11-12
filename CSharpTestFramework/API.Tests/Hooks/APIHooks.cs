@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Allure.Net.Commons;
+using Core;
 using Serilog.Context;
 
 namespace API.Tests.Hooks

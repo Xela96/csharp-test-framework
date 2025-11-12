@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Allure.Net.Commons;
+using Core;
 using Serilog;
 using Serilog.Context;
 using System.Diagnostics;

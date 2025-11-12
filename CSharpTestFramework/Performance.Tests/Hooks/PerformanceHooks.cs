@@ -1,6 +1,7 @@
 ﻿using Core;
 using Serilog;
 using Serilog.Context;
+using System.Diagnostics;
 
 namespace Performance.Tests.Hooks
 {
@@ -23,6 +24,10 @@ namespace Performance.Tests.Hooks
             Log.Information("Ending Performance tests");
 
             Log.CloseAndFlush();
+
+            string sourceFolder = "allure-results";
+            string destinationFolder = "../../../../allure-results";
+            Core.File.MoveDirectoryFiles(sourceFolder, destinationFolder);
         }
 
         [BeforeScenario]

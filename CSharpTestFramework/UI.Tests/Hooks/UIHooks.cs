@@ -26,6 +26,10 @@ namespace UI.Tests.Hooks
             Log.Information("Ending UI tests");
 
             Log.CloseAndFlush();
+
+            string sourceFolder = "allure-results";
+            string destinationFolder = "../../../../allure-results";
+            Core.File.MoveDirectoryFiles(sourceFolder, destinationFolder);
         }
 
         [BeforeScenario]

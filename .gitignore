@@ -60,3 +60,7 @@ nunit-*.xml
 
 # Reqnroll
 *.feature.cs
+
+# Allure Reports
+allure-report/
+allure-results/

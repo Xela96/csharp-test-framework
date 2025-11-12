@@ -1,0 +1,6 @@
+2025-11-12 18:05:20.858 +00:00 [INF] Starting UI tests
+2025-11-12 18:05:22.166 +00:00 [INF] Starting scenario: Visit the homepage
+2025-11-12 18:05:22.240 +00:00 [INF] Accessing homepage of web application
+2025-11-12 18:05:24.723 +00:00 [INF] Homepage has loaded
+2025-11-12 18:05:24.737 +00:00 [INF] Assertion passed - Homepage has loaded with correct content verified
+2025-11-12 18:05:24.809 +00:00 [INF] Finished scenario: Visit the homepage

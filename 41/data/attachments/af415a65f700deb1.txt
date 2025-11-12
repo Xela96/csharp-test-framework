@@ -1,0 +1,6 @@
+2025-11-12 18:05:20.758 +00:00 [INF] Starting Performance tests
+2025-11-12 18:05:20.920 +00:00 [INF] Starting scenario: Verify homepage performance under load
+2025-11-12 18:05:21.036 +00:00 [INF] Executing K6 script homepage_performance.js with full path /home/runner/work/csharp-test-framework/csharp-test-framework/CSharpTestFramework/Performance.Tests/Scripts/homepage_performance.js
+2025-11-12 18:05:21.072 +00:00 [INF] Executing script for load test
+2025-11-12 18:05:26.687 +00:00 [INF] Assertion passed - Status code 200 has been returned
+2025-11-12 18:05:26.696 +00:00 [INF] Finished scenario: Verify homepage performance under load

@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1465","Verify about me section content","","Wed Nov 12 18:05:20 UTC 2025","passed","Wed Nov 12 18:05:22 UTC 2025","","","",""
+"","2569","Visit the homepage","","Wed Nov 12 18:05:22 UTC 2025","passed","Wed Nov 12 18:05:24 UTC 2025","","","",""
+"","1849","Verify homepage status code is 200","","Wed Nov 12 18:05:21 UTC 2025","passed","Wed Nov 12 18:05:22 UTC 2025","","","",""
+"","5758","Verify homepage performance under load","","Wed Nov 12 18:05:20 UTC 2025","passed","Wed Nov 12 18:05:26 UTC 2025","","","",""

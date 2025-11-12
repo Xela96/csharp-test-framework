@@ -1,0 +1,7 @@
+2025-11-12 18:05:20.837 +00:00 [INF] Starting API tests
+2025-11-12 18:05:21.035 +00:00 [INF] Starting scenario: Verify homepage status code is 200
+2025-11-12 18:05:21.102 +00:00 [INF] Setting homepage address to https://dohertyalex.cc
+2025-11-12 18:05:21.170 +00:00 [DBG] Sending GET request to https://dohertyalex.cc
+2025-11-12 18:05:22.881 +00:00 [INF] Received response with status OK
+2025-11-12 18:05:22.891 +00:00 [INF] Assertion passed - status code is OK
+2025-11-12 18:05:22.899 +00:00 [INF] Finished scenario: Verify homepage status code is 200

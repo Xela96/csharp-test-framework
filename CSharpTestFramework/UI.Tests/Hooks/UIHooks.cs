@@ -1,7 +1,10 @@
-﻿using Core;
+﻿using Allure.Net.Commons;
+using Core;
 using Microsoft.Playwright;
 using Serilog;
 using Serilog.Context;
+using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace UI.Tests.Hooks
@@ -26,6 +29,10 @@ namespace UI.Tests.Hooks
             Log.Information("Ending UI tests");
 
             Log.CloseAndFlush();
+
+            string sourceFolder = "allure-results";
+            string destinationFolder = "../../../../allure-results";
+            Core.File.MoveDirectoryFiles(sourceFolder, destinationFolder);
         }
 
         [BeforeScenario]
@@ -42,7 +49,14 @@ namespace UI.Tests.Hooks
         public async Task TakeScreenshotAsync()
         {
             string name = Regex.Replace(_scenarioContext.ScenarioInfo.Title, @"\s+", "");
-            await Page.ScreenshotAsync(new() { Path = $"./screenshots/{name}.png" });
+            string path = $"./screenshots/{name}.png";
+            await Page.ScreenshotAsync(new() { Path = path });
+
+            AllureApi.AddAttachment(
+                name: "Screenshot",
+                type: "image/png",
+                path: path
+            );
         }
 
         [BeforeScenario]

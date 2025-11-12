@@ -38,6 +38,7 @@ jobs:
       project: ${{ github.event_name == 'workflow_dispatch' && inputs.Project || 'All' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
       
     runs-on: ubuntu-latest
 
@@ -75,6 +76,9 @@ jobs:
     - name: Restore dependencies
       working-directory: ./CSharpTestFramework
       run: dotnet restore
+    - name: Clean
+      working-directory: ./CSharpTestFramework
+      run: dotnet clean
     - name: Build
       working-directory: ./CSharpTestFramework
       run: dotnet build --no-restore
@@ -87,6 +91,30 @@ jobs:
     - name: Test
       working-directory: ./CSharpTestFramework
       run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}
+
+    - name: Load test report history
+      uses: actions/checkout@v4
+      if: always()
+      continue-on-error: true
+      with:
+        ref: gh-pages
+        path: gh-pages
+
+    - name: Build test report
+      uses: simple-elf/allure-report-action@v1.13
+      if: always()
+      with:
+        gh_pages: gh-pages
+        allure_results: CSharpTestFramework/allure-results
+        allure_history: CSharpTestFramework/allure-history
+
+    - name: Publish test report
+      if: always()
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: CSharpTestFramework/allure-history
 
     - name: Upload test logs
       if: always()

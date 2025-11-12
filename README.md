@@ -18,10 +18,11 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 
 ## Dependencies
 ### Nuget Packages
+- Allure.Reqnroll Version 2.14.1
 - DotNetEnv Version = 3.1.1
 - Microsoft.Playwright.NUnit Version = 1.55.0
 - NUnit Version = 4.4.0
-- Reqnroll.NUnit Version = 3.2.0
+- Reqnroll.NUnit Version = 3.0.3
 - Supabase Version = 1.1.1
 - RestSharp Version = 112.1.0
 - Serilog Version = 4.3.0
@@ -46,3 +47,5 @@ These can be found at:
 
 Similarly, screenshots are taken for the UI tests and can be found in the generated artifact at:   
 ```test-logs/<project>/bin/Debug/net8.0/screenshots/<test-name>.png```
+
+Allure test report, published to: https://xela96.github.io/csharp-test-framework/

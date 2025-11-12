@@ -1,4 +1,5 @@
-﻿using Core;
+﻿using Allure.Net.Commons;
+using Core;
 using Serilog;
 using Serilog.Context;
 
@@ -23,6 +24,10 @@ namespace Data.Tests.Hooks
             Log.Information("Ending Data tests");
 
             Log.CloseAndFlush();
+
+            string sourceFolder = "allure-results";
+            string destinationFolder = "../../../../allure-results";
+            Core.File.MoveDirectoryFiles(sourceFolder, destinationFolder);
         }
 
         [BeforeScenario]

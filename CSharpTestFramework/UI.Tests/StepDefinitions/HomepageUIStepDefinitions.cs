@@ -4,7 +4,7 @@ using UI.Tests.Pages;
 namespace UI.Tests.StepDefinitions
 {
     [Binding]
-    public sealed class HomepageUIStepDefinitions(Homepage homepage)
+    internal sealed class HomepageUIStepDefinitions(Homepage homepage)
     {
         private readonly Homepage _homepage = homepage;
 

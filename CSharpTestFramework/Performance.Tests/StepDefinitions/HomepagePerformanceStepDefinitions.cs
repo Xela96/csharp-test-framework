@@ -1,14 +1,11 @@
-using System;
 using System.Diagnostics;
-using NUnit.Framework;
 using System.Text.RegularExpressions;
-using Reqnroll;
 using NUnit.Framework.Legacy;
 
 namespace Performance.Tests.StepDefinitions
 {
     [Binding]
-    public class HomepagePerformanceStepDefinitions (ScenarioContext _scenarioContext)
+    internal class HomepagePerformanceStepDefinitions (ScenarioContext _scenarioContext)
     {
         [Given("the performance test script (.*)")]
         public void GivenThePerformanceTestScript(string scriptName)
@@ -30,9 +27,11 @@ namespace Performance.Tests.StepDefinitions
 
             Log.Information($"Executing script for load test");
 
-            var p = new Process
+            try
             {
-                StartInfo =
+                var p = new Process
+                {
+                    StartInfo =
                 {
                     FileName = "k6",
                     RedirectStandardOutput = true,
@@ -41,29 +40,32 @@ namespace Performance.Tests.StepDefinitions
                     CreateNoWindow = true,
                     Arguments = $"run {scriptPath}"
                 }
-            };
-            p.Start();
+                };
+                p.Start();
 
-            StreamReader reader = p.StandardOutput;
+                StreamReader reader = p.StandardOutput;
 
-            string output = reader.ReadToEnd();
-            string error = p.StandardError.ReadToEnd();
+                string output = reader.ReadToEnd();
+                string error = p.StandardError.ReadToEnd();
 
-            //log output/error here
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Console.WriteLine("K6 Errors:");
+                    Console.WriteLine(error);
+                    _scenarioContext.Add("error", error);
 
-            if (!string.IsNullOrEmpty(error))
-            {
-                Console.WriteLine("K6 Errors:");
-                Console.WriteLine(error);
-                _scenarioContext.Add("error", error);
+                    Log.Error($"Error with execution of K6 script: {error}");
+                }
 
-                Log.Error($"Error with execution of K6 script: {error}");
+                p.WaitForExit();
+
+                _scenarioContext.Add("output", output);
             }
-
-            p.WaitForExit();
-
-            _scenarioContext.Add("output", output);
-
+            catch (Exception ex)
+            {
+                Log.Error($"Execution of K6 script failed.", ex);
+                throw new InvalidOperationException("K6 script, see logs for more details.", ex);
+            }
         }
 
         [Then("the appropriate status code should be returned")]

@@ -7,7 +7,7 @@ using RestSharp;
 namespace API.Tests.StepDefinitions
 {
     [Binding]
-    public class HomepageAPIStepDefinitions(ScenarioContext scenarioContext)
+    internal class HomepageAPIStepDefinitions(ScenarioContext scenarioContext)
     {
         private readonly ScenarioContext _scenarioContext = scenarioContext;
 

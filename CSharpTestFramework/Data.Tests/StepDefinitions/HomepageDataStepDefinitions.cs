@@ -5,7 +5,7 @@ using NUnit.Framework.Legacy;
 namespace Data.Tests.StepDefinitions
 {
     [Binding]
-    public sealed class HomepageDataStepDefinitions
+    internal sealed class HomepageDataStepDefinitions
     {
         private readonly ScenarioContext _scenarioContext;
 

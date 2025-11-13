@@ -30,6 +30,7 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 - Serilog.Sinks.Console Version = 1.1.1
 
 ## Setup
+- For local testing, create .env file in Core project with SUPABASE_URL & SUPABASE_KEY environment variables.
 - From .\CSharpTestFramework:  
 ```dotnet build```
 ## Run Tests

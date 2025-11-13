@@ -1,26 +1,25 @@
 ﻿using Microsoft.Playwright;
 using UI.Tests.Hooks;
 
-
 namespace UI.Tests.Pages
 {
-    public class Homepage(UIHooks hooks)
+    internal class Homepage(UIHooks hooks)
     {
         private readonly IPage _page = hooks.Page;
 
         public ILocator ProjectsLink => _page.Locator("a.nav-link[href='/projects']");
 
-        public async Task GoToAsync()
+        internal async Task GoToAsync()
         {
             await _page.GotoAsync("https://dohertyalex.cc");
         }
 
-        public async Task WaitForPageAsync()
+        internal async Task WaitForPageAsync()
         {
             await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
         }
 
-        public async Task<string> GetTitleAsync()
+        internal async Task<string> GetTitleAsync()
         {
             return await _page.TitleAsync();
         }

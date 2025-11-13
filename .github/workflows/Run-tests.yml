@@ -58,39 +58,19 @@ jobs:
             echo "project=${project}" >> $GITHUB_ENV
           fi
 
-    - name: Install k6
-      run: |
-        sudo apt-get update
-        sudo gpg -k
-        sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-        echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-        sudo apt-get update
-        sudo apt-get install k6
-
     - uses: actions/checkout@v4
     - name: Setup .NET projects
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
 
-    - name: Restore dependencies
+    - name: Build Docker Image
       working-directory: ./CSharpTestFramework
-      run: dotnet restore
-    - name: Clean
-      working-directory: ./CSharpTestFramework
-      run: dotnet clean
-    - name: Build
-      working-directory: ./CSharpTestFramework
-      run: dotnet build --no-restore
+      run: docker build -t csharp-tests .
 
-    - name: Install Playwright browsers
-      working-directory: ./CSharpTestFramework/UI.Tests
-      run: |
-        pwsh bin/Debug/net8.0/playwright.ps1 install
-
-    - name: Test
+    - name: Run tests in Docker container
       working-directory: ./CSharpTestFramework
-      run: dotnet test --no-build --verbosity normal ${{ env.tag }} ${{ env.project }}
+      run: docker run --rm -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" -v "${PWD}/allure-results:/app/allure-results" -v "${PWD}/logs/Data.Tests:/app/Data.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/UI.Tests:/app/UI.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/API.Tests:/app/API.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/Performance.Tests:/app/Performance.Tests/bin/Debug/net8.0/logs" csharp-tests
 
     - name: Load test report history
       uses: actions/checkout@v4
@@ -122,5 +102,7 @@ jobs:
       with:
         name: test-logs
         path: |
-          CSharpTestFramework/**/bin/Debug/net8.0/logs/*.txt
-          CSharpTestFramework/UI.Tests/bin/Debug/net8.0/screenshots/*.png
+          CSharpTestFramework/logs/API.Tests/*.txt
+          CSharpTestFramework/logs/Data.Tests/*.txt
+          CSharpTestFramework/logs/Performance.Tests/*.txt
+          CSharpTestFramework/logs/UI.Tests/*.txt

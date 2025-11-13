@@ -36,7 +36,7 @@ namespace Core
             
         }
 
-        public Supabase.Client Client => _client ?? throw new InvalidOperationException("Database client not initialized.");
+        internal Supabase.Client Client => _client ?? throw new InvalidOperationException("Database client not initialized.");
 
         public async Task<List<T>> GetAllAsync<T>() where T : Supabase.Postgrest.Models.BaseModel, new()
         {

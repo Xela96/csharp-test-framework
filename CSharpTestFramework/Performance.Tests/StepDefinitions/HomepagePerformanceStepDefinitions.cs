@@ -8,7 +8,7 @@ using NUnit.Framework.Legacy;
 namespace Performance.Tests.StepDefinitions
 {
     [Binding]
-    public class HomepagePerformanceStepDefinitions (ScenarioContext _scenarioContext)
+    internal class HomepagePerformanceStepDefinitions (ScenarioContext _scenarioContext)
     {
         [Given("the performance test script (.*)")]
         public void GivenThePerformanceTestScript(string scriptName)

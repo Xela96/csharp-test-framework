@@ -27,15 +27,24 @@ on:
           - Data.Tests
           - Performance.Tests
           - UI.Tests
+      Environment:
+        description: 'Choose environment'
+        required: true
+        default: 'Production'
+        type: choice
+        options:
+          - Local
+          - Production
 
-# TBD - Input choice between Production and Local environments
-# TBD - Repository dispatch
+  repository_dispatch:
+    types: [run-csharp-tests]
 
 jobs:
   Run-Tests:
     env:
-      tag: ${{ github.event_name == 'workflow_dispatch' && inputs.Category || 'All' }}
-      project: ${{ github.event_name == 'workflow_dispatch' && inputs.Project || 'All' }}
+      tag: ${{ inputs.Category || github.event.client_payload.Category || 'All' }}
+      project: ${{ inputs.Project || github.event.client_payload.Project || 'All' }}
+      environment: ${{ inputs.Environment || github.event.client_payload.Environment || 'Production' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
@@ -64,13 +73,28 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Checkout personal website repo
+      uses: actions/checkout@v3
+      with:
+        repository: Xela96/personal-website
+        ref: develop
+        path: personal-website
+
+    - name: Set TEST_URL based on environment
+      run: |
+        if [ "${environment}" = "Production" ]; then
+          echo "TEST_URL=https://dohertyalex.cc/" >> $GITHUB_ENV
+        else
+          echo "TEST_URL=http://web:5000" >> $GITHUB_ENV
+        fi      
+
     - name: Build Docker Image
       working-directory: ./CSharpTestFramework
       run: docker build -t csharp-tests .
 
     - name: Run tests in Docker container
       working-directory: ./CSharpTestFramework
-      run: docker run --rm -e SUPABASE_KEY="${{ secrets.SUPABASE_KEY }}" -e SUPABASE_URL="${{ secrets.SUPABASE_URL }}" -v "${PWD}/allure-results:/app/allure-results" -v "${PWD}/logs/Data.Tests:/app/Data.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/UI.Tests:/app/UI.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/API.Tests:/app/API.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/Performance.Tests:/app/Performance.Tests/bin/Debug/net8.0/logs" csharp-tests
+      run: docker run --rm -e SUPABASE_KEY="${SUPABASE_KEY}" -e SUPABASE_URL="${SUPABASE_URL}" -e TARGET_ENVIRONMENT="${TEST_URL}" -v "${PWD}/allure-results:/app/allure-results" -v "${PWD}/logs/Data.Tests:/app/Data.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/UI.Tests:/app/UI.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/API.Tests:/app/API.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/Performance.Tests:/app/Performance.Tests/bin/Debug/net8.0/logs" csharp-tests
 
     - name: Load test report history
       uses: actions/checkout@v4

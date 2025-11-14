@@ -8,7 +8,8 @@ export const options = {
 }
 
 export default function () {
-    const res = http.get('https://dohertyalex.cc/')
+    const baseUrl = __ENV.BASE_URL || "https://dohertyalex.cc";
+    const res = http.get(baseUrl)
 
     check(res, {
         'status is 200': (r) => r.status === 200,

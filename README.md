@@ -31,13 +31,13 @@ Test framework in CSharp, demonstrating the structure for component testing, int
 
 ## Setup
 ### Locally
-- Create .env file in Core project with SUPABASE_URL & SUPABASE_KEY environment variables.
+- Create .env file in Core project with SUPABASE_URL, SUPABASE_KEY & TARGET_ENVIRONMENT (https://dohertyalex.cc/ or http://127.0.0.1:5000/) environment variables.
 - From .\CSharpTestFramework:  
 ```dotnet build```
 
 ### Docker Container
 - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Create .env file in Core project with SUPABASE_URL & SUPABASE_KEY environment variables.
+- Create .env file in Core project with SUPABASE_URL, SUPABASE_KEY & TARGET_ENVIRONMENT (https://dohertyalex.cc/ or http://127.0.0.1:5000/) environment variables.
 - From .\CSharpTestFramework:
    - ``docker build -t csharp-tests .``  
 
@@ -53,10 +53,6 @@ Optional parameters:
 ### Docker Container
 - From .\CSharpTestFramework: (-v arguments can be omitted if files not needed to be transferred to your system)    
 ``docker run --rm [-v "${PWD}/allure-results:/app/allure-results" -v "${PWD}/logs/Data.Tests:/app/Data.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/UI.Tests:/app/UI.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/API.Tests:/app/API.Tests/bin/Debug/net8.0/logs" -v "${PWD}/logs/Performance.Tests:/app/Performance.Tests/bin/Debug/net8.0/logs"] csharp-tests``
-
-Optional parameters: 
-   * Project Name
-   * Test filter
 
 ## Test Output
 Log files for each test project is generated as an artifact following testing.

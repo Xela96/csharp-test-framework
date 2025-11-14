@@ -1,3 +1,4 @@
+using Core;
 using NUnit.Framework.Legacy;
 using UI.Tests.Pages;
 
@@ -8,8 +9,8 @@ namespace UI.Tests.StepDefinitions
     {
         private readonly Homepage _homepage = homepage;
 
-        [Given("a user accessing {string}")]
-        public async Task GivenAUserAccessing(string address)
+        [Given("a user accessing the homepage")]
+        public async Task GivenAUserAccessing()
         {
             Log.Information("Accessing homepage of web application");
             await _homepage.GoToAsync();

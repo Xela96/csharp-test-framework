@@ -11,9 +11,10 @@ namespace API.Tests.StepDefinitions
     {
         private readonly ScenarioContext _scenarioContext = scenarioContext;
 
-        [Given("the homepage address {string}")]
-        public void GivenTheHomepageAddress(string homepage)
+        [Given("the homepage address")]
+        public void GivenTheHomepageAddress()
         {
+            var homepage = TestConfig.BaseUrl;
             Log.Information($"Setting homepage address to {homepage}");
             _scenarioContext.Add("homepage", homepage);
         }

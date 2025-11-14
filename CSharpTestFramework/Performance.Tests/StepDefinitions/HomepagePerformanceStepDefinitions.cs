@@ -1,5 +1,7 @@
+using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Core;
 using NUnit.Framework.Legacy;
 
 namespace Performance.Tests.StepDefinitions
@@ -24,6 +26,7 @@ namespace Performance.Tests.StepDefinitions
         public void WhenTheLoadTestIsExecuted()
         {
             var scriptPath = _scenarioContext.Get<string>("scriptPath");
+            var baseUrl = TestConfig.BaseUrl;
 
             Log.Information($"Executing script for load test");
 
@@ -41,6 +44,7 @@ namespace Performance.Tests.StepDefinitions
                     Arguments = $"run {scriptPath}"
                 }
                 };
+                p.StartInfo.EnvironmentVariables["BASE_URL"] = baseUrl;
                 p.Start();
 
                 StreamReader reader = p.StandardOutput;
@@ -72,10 +76,14 @@ namespace Performance.Tests.StepDefinitions
         public void ThenTheAppropriateStatusCodeShouldBeReturned()
         {
             var output = _scenarioContext.Get<string>("output");
-            var match = Regex.IsMatch(output, "status is 200");
+            var match1 = Regex.IsMatch(output, "status is 200");
 
-            ClassicAssert.True(match);
-            Log.Information("Assertion passed - Status code 200 has been returned");
+            
+            var match2 = Regex.IsMatch(output, "checks_succeeded...: 100.00%");
+
+            ClassicAssert.True(match1);
+            ClassicAssert.True(match2);
+            Log.Information("Assertions passed - Status code 200 has been returned and tests passed");
         }
     }
 }

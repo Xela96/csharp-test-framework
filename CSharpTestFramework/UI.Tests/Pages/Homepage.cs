@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright;
+﻿using Core;
+using Microsoft.Playwright;
 using UI.Tests.Hooks;
 
 namespace UI.Tests.Pages
@@ -11,7 +12,7 @@ namespace UI.Tests.Pages
 
         internal async Task GoToAsync()
         {
-            await _page.GotoAsync("https://dohertyalex.cc");
+            await _page.GotoAsync(TestConfig.BaseUrl);
         }
 
         internal async Task WaitForPageAsync()

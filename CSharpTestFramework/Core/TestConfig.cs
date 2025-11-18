@@ -23,5 +23,25 @@ namespace Core
                 };
             }
         }
+
+        public static string Username
+        {
+            get
+            {
+                var env = Environment.GetEnvironmentVariable("USERNAME")?.ToLower();
+
+                return env;
+            }
+        }
+
+        public static string Password
+        {
+            get
+            {
+                var env = Environment.GetEnvironmentVariable("PASSWORD")?.ToLower();
+
+                return env;
+            }
+        }
     }
 }

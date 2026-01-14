@@ -8,7 +8,15 @@ namespace UI.Tests.Pages
     {
         private readonly IPage _page = hooks.Page;
 
-        public ILocator ProjectsLink => _page.Locator("a.nav-link[href='/projects']");
+        public ILocator HomepageLink => _page.Locator("a[href='/']");
+
+        public ILocator ProjectsLink => _page.Locator("a[href='/projects']");
+
+        public ILocator LinkedInLink => _page.Locator("a.btn:has(i.bi-linkedin)");
+
+        public ILocator GithubLink => _page.Locator("a.btn:has(i.bi-github)");
+
+        public ILocator DownloadButton => _page.GetByText("Download");
 
         internal async Task GoToAsync()
         {

@@ -64,3 +64,9 @@ nunit-*.xml
 # Allure Reports
 allure-report/
 allure-results/
+
+# Gmail credentials
+.access_token
+credentials.json
+token.json/
+token.json
